@@ -1,0 +1,852 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>For You ❤️</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+:root{
+    --pink:#ff4f81;
+    --light:#fff5f8;
+    --dark:#301520;
+}
+
+body{
+    min-height:100vh;
+    overflow:hidden;
+    font-family:Georgia, "Times New Roman", serif;
+    background:
+        radial-gradient(circle at 20% 20%, #ffdce8 0%, transparent 35%),
+        radial-gradient(circle at 80% 80%, #ffc4d8 0%, transparent 35%),
+        linear-gradient(135deg,#fff8fb,#ffe7ef);
+    color:var(--dark);
+}
+
+/* ---------------- INTRO ---------------- */
+
+.intro{
+    position:fixed;
+    inset:0;
+    z-index:100;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    flex-direction:column;
+    background:
+        radial-gradient(circle,#ffedf4,#ffc6d9 70%,#f58cab);
+    transition:1.2s ease;
+}
+
+.intro.hide{
+    opacity:0;
+    visibility:hidden;
+    pointer-events:none;
+}
+
+.intro-heart{
+    font-size:90px;
+    animation:heartbeat 1.4s infinite;
+    filter:drop-shadow(0 15px 20px #b62c59);
+}
+
+@keyframes heartbeat{
+    0%,100%{transform:scale(1)}
+    15%{transform:scale(1.15)}
+    30%{transform:scale(1)}
+    45%{transform:scale(1.12)}
+}
+
+.intro h1{
+    margin-top:25px;
+    font-size:clamp(34px,7vw,70px);
+    letter-spacing:3px;
+    text-align:center;
+}
+
+.intro p{
+    margin:12px 0 28px;
+    font-size:18px;
+    opacity:.75;
+}
+
+.open-btn{
+    border:none;
+    padding:16px 34px;
+    border-radius:50px;
+    background:#351521;
+    color:white;
+    font-size:16px;
+    cursor:pointer;
+    box-shadow:0 15px 30px #8f3654;
+    transition:.3s;
+}
+
+.open-btn:hover{
+    transform:translateY(-4px) scale(1.04);
+}
+
+/* ---------------- SCENE ---------------- */
+
+.scene{
+    width:100vw;
+    height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    perspective:2200px;
+    padding:30px;
+}
+
+.book{
+    position:relative;
+    width:min(900px,92vw);
+    height:min(620px,78vh);
+    transform-style:preserve-3d;
+    transition:transform 1s ease;
+}
+
+.book:hover{
+    transform:rotateX(2deg) rotateY(-2deg);
+}
+
+/* Book cover */
+
+.cover{
+    position:absolute;
+    inset:0;
+    border-radius:10px 20px 20px 10px;
+    background:
+        linear-gradient(135deg,#52182c,#a62f58,#57182e);
+    box-shadow:
+        0 40px 80px rgba(70,15,35,.35),
+        inset 0 0 40px rgba(255,255,255,.08);
+    transform-style:preserve-3d;
+}
+
+.cover::before{
+    content:"";
+    position:absolute;
+    inset:18px;
+    border:2px solid rgba(255,220,230,.5);
+    border-radius:8px 15px 15px 8px;
+}
+
+.cover-title{
+    position:absolute;
+    inset:0;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    flex-direction:column;
+    color:#ffeef4;
+    text-align:center;
+    padding:30px;
+}
+
+.cover-title .heart{
+    font-size:80px;
+    margin-bottom:20px;
+    animation:heartbeat 1.8s infinite;
+}
+
+.cover-title h2{
+    font-size:clamp(35px,6vw,60px);
+    letter-spacing:2px;
+}
+
+.cover-title p{
+    margin-top:12px;
+    font-family:Arial,sans-serif;
+    opacity:.8;
+}
+
+/* ---------------- PAGES ---------------- */
+
+.page{
+    position:absolute;
+    top:3%;
+    right:2%;
+    width:96%;
+    height:94%;
+    background:
+        linear-gradient(90deg,
+            rgba(0,0,0,.07),
+            transparent 7%,
+            transparent 94%,
+            rgba(0,0,0,.05)),
+        #fffaf2;
+    border-radius:4px 14px 14px 4px;
+    padding:45px 55px;
+    transform-origin:left center;
+    transform-style:preserve-3d;
+    box-shadow:
+        0 10px 30px rgba(60,25,35,.2),
+        inset 8px 0 15px rgba(100,50,50,.06);
+    transition:
+        transform 1.15s cubic-bezier(.65,.05,.25,1),
+        z-index 0s linear 0.55s;
+    backface-visibility:hidden;
+    overflow:hidden;
+}
+
+.page::after{
+    content:"";
+    position:absolute;
+    inset:15px;
+    border:1px solid rgba(170,100,110,.15);
+    pointer-events:none;
+}
+
+.page.flipped{
+    transform:rotateY(-180deg);
+}
+
+.page-content{
+    height:100%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    flex-direction:column;
+    text-align:center;
+    position:relative;
+    z-index:2;
+}
+
+.page-number{
+    position:absolute;
+    bottom:18px;
+    right:25px;
+    font:13px Arial,sans-serif;
+    opacity:.45;
+}
+
+.page h2{
+    color:#8e284d;
+    font-size:clamp(27px,4vw,46px);
+    margin-bottom:20px;
+}
+
+.page p{
+    max-width:650px;
+    line-height:1.9;
+    font-size:clamp(16px,2vw,20px);
+}
+
+.big-heart{
+    font-size:85px;
+    margin-bottom:20px;
+    animation:float 3s ease-in-out infinite;
+}
+
+@keyframes float{
+    0%,100%{transform:translateY(0)}
+    50%{transform:translateY(-12px)}
+}
+
+/* ---------------- PHOTO ---------------- */
+
+.photo-frame{
+    width:min(330px,65%);
+    height:min(330px,45%);
+    padding:10px;
+    background:white;
+    box-shadow:0 15px 35px rgba(0,0,0,.2);
+    transform:rotate(-2deg);
+}
+
+.photo-frame img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+}
+
+.photo-caption{
+    margin-top:22px;
+    font-style:italic;
+}
+
+/* ---------------- CONTROLS ---------------- */
+
+.controls{
+    position:fixed;
+    bottom:25px;
+    left:50%;
+    transform:translateX(-50%);
+    z-index:50;
+    display:flex;
+    gap:12px;
+}
+
+.control{
+    border:1px solid rgba(110,30,60,.2);
+    background:rgba(255,255,255,.85);
+    backdrop-filter:blur(10px);
+    width:48px;
+    height:48px;
+    border-radius:50%;
+    cursor:pointer;
+    font-size:19px;
+    box-shadow:0 8px 20px rgba(80,20,40,.15);
+    transition:.25s;
+}
+
+.control:hover{
+    transform:translateY(-3px);
+    background:#fff;
+}
+
+.music{
+    position:fixed;
+    top:22px;
+    right:22px;
+    z-index:60;
+    border:none;
+    width:48px;
+    height:48px;
+    border-radius:50%;
+    background:rgba(255,255,255,.85);
+    cursor:pointer;
+    box-shadow:0 8px 20px rgba(80,20,40,.15);
+}
+
+/* ---------------- HEART PARTICLES ---------------- */
+
+.heart-particle{
+    position:fixed;
+    pointer-events:none;
+    z-index:5;
+    animation:rise linear forwards;
+    opacity:.7;
+}
+
+@keyframes rise{
+    from{
+        transform:translateY(20px) scale(.7) rotate(0);
+        opacity:0;
+    }
+    15%{opacity:.8}
+    to{
+        transform:translateY(-110vh) scale(1.2) rotate(30deg);
+        opacity:0;
+    }
+}
+
+/* ---------------- RESPONSIVE ---------------- */
+
+@media(max-width:600px){
+
+    .scene{
+        padding:12px;
+    }
+
+    .book{
+        width:94vw;
+        height:75vh;
+    }
+
+    .page{
+        padding:30px 25px;
+    }
+
+    .page p{
+        line-height:1.65;
+    }
+
+    .cover-title h2{
+        font-size:35px;
+    }
+
+    .cover-title .heart{
+        font-size:60px;
+    }
+
+    .photo-frame{
+        width:70%;
+        height:42%;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<!-- ================= INTRO ================= -->
+
+<section class="intro" id="intro">
+
+    <div class="intro-heart">❤️</div>
+
+    <h1>For Someone Special</h1>
+
+    <p>A little letter from my heart...</p>
+
+    <button class="open-btn" onclick="openLetter()">
+        Open My Heart 💌
+    </button>
+
+</section>
+
+
+<!-- ================= MUSIC ================= -->
+
+<audio id="bgMusic" loop>
+    <source src="tera_baana.mp3" type="audio/mpeg">
+</audio>
+
+<button class="music" onclick="toggleMusic()" id="musicBtn">
+    🔊
+</button>
+
+
+<!-- ================= BOOK ================= -->
+
+<main class="scene">
+
+<div class="book" id="book">
+
+    <!-- BACK COVER -->
+    <div class="cover"></div>
+
+
+    <!-- PAGE 1 -->
+
+    <section class="page" style="z-index:8">
+
+        <div class="page-content">
+
+            <div class="big-heart">💗</div>
+
+            <h2>Dear You...</h2>
+
+            <p>
+                कुछ बातें ऐसी होती हैं जिन्हें बोलना मुश्किल होता है,
+                इसलिए आज उन्हें इन पन्नों में लिख रहा हूँ।
+                शायद ये शब्द वो सब कह दें,
+                जो मैं कभी ठीक से कह नहीं पाया।
+            </p>
+
+        </div>
+
+        <span class="page-number">01</span>
+
+    </section>
+
+
+    <!-- PAGE 2 -->
+
+    <section class="page" style="z-index:7">
+
+        <div class="page-content">
+
+            <h2>You Are Special</h2>
+
+            <p>
+                तुम्हारी मौजूदगी ने मेरी दुनिया में
+                ऐसी जगह बना ली है जिसे शब्दों में समझाना आसान नहीं।
+                कुछ लोग जिंदगी में आते हैं...
+                और फिर जिंदगी का एक खूबसूरत हिस्सा बन जाते हैं।
+            </p>
+
+            <div class="big-heart">🌸</div>
+
+        </div>
+
+        <span class="page-number">02</span>
+
+    </section>
+
+
+    <!-- PAGE 3 -->
+
+    <section class="page" style="z-index:6">
+
+        <div class="page-content">
+
+            <div class="photo-frame">
+                <img src="src/photo1.jpg"
+                     alt="Our Memory"
+                     onerror="this.style.display='none'">
+            </div>
+
+            <div class="photo-caption">
+                "कुछ यादें तस्वीरों से ज्यादा होती हैं..."
+            </div>
+
+        </div>
+
+        <span class="page-number">03</span>
+
+    </section>
+
+
+    <!-- PAGE 4 -->
+
+    <section class="page" style="z-index:5">
+
+        <div class="page-content">
+
+            <h2>From My Heart</h2>
+
+            <p>
+                अगर कभी मेरी किसी बात ने तुम्हें hurt किया हो,
+                या मेरे किसी व्यवहार ने तुम्हें दुख दिया हो,
+                तो दिल से sorry।
+                मेरा इरादा कभी तुम्हें दुख देने का नहीं था।
+            </p>
+
+            <div class="big-heart">🥺❤️</div>
+
+        </div>
+
+        <span class="page-number">04</span>
+
+    </section>
+
+
+    <!-- PAGE 5 -->
+
+    <section class="page" style="z-index:4">
+
+        <div class="page-content">
+
+            <h2>One Little Promise</h2>
+
+            <p>
+                मैं perfect होने का वादा नहीं कर सकता,
+                लेकिन इतना जरूर कह सकता हूँ कि
+                अपनी गलतियों को समझने और बेहतर बनने की कोशिश
+                हमेशा करूंगा।
+            </p>
+
+            <div class="big-heart">🤍</div>
+
+        </div>
+
+        <span class="page-number">05</span>
+
+    </section>
+
+
+    <!-- PAGE 6 -->
+
+    <section class="page" style="z-index:3">
+
+        <div class="page-content">
+
+            <h2>Thank You</h2>
+
+            <p>
+                मेरी जिंदगी की उन खूबसूरत यादों के लिए
+                जिनके बारे में सोचकर आज भी चेहरे पर मुस्कान आ जाती है।
+                Thank you for being a beautiful part of my story.
+            </p>
+
+            <div class="big-heart">🌷</div>
+
+        </div>
+
+        <span class="page-number">06</span>
+
+    </section>
+
+
+    <!-- PAGE 7 -->
+
+    <section class="page" style="z-index:2">
+
+        <div class="page-content">
+
+            <div class="big-heart">❤️</div>
+
+            <h2>And Finally...</h2>
+
+            <p>
+                कुछ feelings को किसी एक दिन,
+                किसी एक message या किसी एक letter में
+                पूरी तरह लिखा नहीं जा सकता।
+
+                <br><br>
+
+                बस इतना जान लो...
+                तुम मेरे लिए बहुत खास हो।
+            </p>
+
+        </div>
+
+        <span class="page-number">07</span>
+
+    </section>
+
+
+    <!-- FINAL PAGE -->
+
+    <section class="page" style="z-index:1">
+
+        <div class="page-content">
+
+            <div class="big-heart">💖</div>
+
+            <h2>With Love</h2>
+
+            <p>
+                हमेशा खुश रहना।  
+                और मुस्कुराते रहना।
+                
+                <br><br>
+
+                <strong>Made with ❤️</strong>
+            </p>
+
+        </div>
+
+        <span class="page-number">08</span>
+
+    </section>
+
+</div>
+
+</main>
+
+
+<!-- ================= CONTROLS ================= -->
+
+<div class="controls">
+
+    <button class="control" onclick="previousPage()">
+        ←
+    </button>
+
+    <button class="control" onclick="nextPage()">
+        →
+    </button>
+
+</div>
+
+
+<script>
+
+const pages = document.querySelectorAll(".page");
+const intro = document.getElementById("intro");
+const music = document.getElementById("bgMusic");
+const musicBtn = document.getElementById("musicBtn");
+
+let currentPage = 0;
+let musicPlaying = false;
+
+
+/* OPEN LETTER */
+
+function openLetter(){
+
+    intro.classList.add("hide");
+
+    music.volume = 0.45;
+
+    music.play()
+    .then(()=>{
+        musicPlaying = true;
+        musicBtn.innerHTML = "🔊";
+    })
+    .catch(()=>{
+        musicPlaying = false;
+        musicBtn.innerHTML = "🔇";
+    });
+
+    createHearts();
+}
+
+
+/* NEXT PAGE */
+
+function nextPage(){
+
+    if(currentPage < pages.length){
+
+        pages[currentPage].classList.add("flipped");
+
+        currentPage++;
+
+        createBurst();
+
+    }
+
+}
+
+
+/* PREVIOUS PAGE */
+
+function previousPage(){
+
+    if(currentPage > 0){
+
+        currentPage--;
+
+        pages[currentPage].classList.remove("flipped");
+
+    }
+
+}
+
+
+/* MUSIC */
+
+function toggleMusic(){
+
+    if(musicPlaying){
+
+        music.pause();
+
+        musicPlaying = false;
+
+        musicBtn.innerHTML = "🔇";
+
+    }else{
+
+        music.play();
+
+        musicPlaying = true;
+
+        musicBtn.innerHTML = "🔊";
+
+    }
+
+}
+
+
+/* KEYBOARD */
+
+document.addEventListener("keydown",(e)=>{
+
+    if(e.key === "ArrowRight"){
+        nextPage();
+    }
+
+    if(e.key === "ArrowLeft"){
+        previousPage();
+    }
+
+});
+
+
+/* TOUCH SWIPE */
+
+let touchStartX = 0;
+
+document.addEventListener("touchstart",(e)=>{
+
+    touchStartX = e.changedTouches[0].screenX;
+
+});
+
+document.addEventListener("touchend",(e)=>{
+
+    let touchEndX = e.changedTouches[0].screenX;
+
+    if(touchEndX < touchStartX - 50){
+        nextPage();
+    }
+
+    if(touchEndX > touchStartX + 50){
+        previousPage();
+    }
+
+});
+
+
+/* FLOATING HEARTS */
+
+function createHearts(){
+
+    setInterval(()=>{
+
+        const heart = document.createElement("div");
+
+        heart.className = "heart-particle";
+
+        heart.innerHTML =
+            ["❤️","💗","💕","💖","♡"][Math.floor(Math.random()*5)];
+
+        heart.style.left =
+            Math.random()*100 + "vw";
+
+        heart.style.bottom = "-30px";
+
+        heart.style.fontSize =
+            (12 + Math.random()*25) + "px";
+
+        heart.style.animationDuration =
+            (5 + Math.random()*7) + "s";
+
+        document.body.appendChild(heart);
+
+        setTimeout(()=>{
+            heart.remove();
+        },12000);
+
+    },650);
+
+}
+
+
+/* HEART BURST */
+
+function createBurst(){
+
+    for(let i=0;i<12;i++){
+
+        const heart = document.createElement("div");
+
+        heart.innerHTML = "❤";
+
+        heart.style.position = "fixed";
+        heart.style.left = "50%";
+        heart.style.top = "50%";
+        heart.style.zIndex = "200";
+        heart.style.pointerEvents = "none";
+        heart.style.fontSize = "20px";
+
+        const angle = Math.random()*Math.PI*2;
+        const distance = 80 + Math.random()*180;
+
+        document.body.appendChild(heart);
+
+        heart.animate([
+
+            {
+                transform:"translate(-50%,-50%) scale(.4)",
+                opacity:1
+            },
+
+            {
+                transform:
+                    `translate(
+                    calc(-50% + ${Math.cos(angle)*distance}px),
+                    calc(-50% + ${Math.sin(angle)*distance}px)
+                    ) scale(1.4)`,
+                opacity:0
+            }
+
+        ],{
+            duration:900,
+            easing:"ease-out"
+        });
+
+        setTimeout(()=>heart.remove(),950);
+
+    }
+
+}
+
+</script>
+
+</body>
+</html>
+```
